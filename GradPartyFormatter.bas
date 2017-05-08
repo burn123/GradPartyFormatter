@@ -8,9 +8,9 @@ Public SpacedRowCount As Integer
 
 
 
-Sub Main()
+Sub FormatGradParties()
 '
-' Main Macro
+' FormatGradParties Macro
 ' Runs all of the different parts to format the spreadsheet
 '
     Dim Filename As String
@@ -19,7 +19,7 @@ Sub Main()
     Application.Run "'" + Filename + "'!SortRows"
     Application.Run "'" + Filename + "'!DeleteBlankRows"
     Application.Run "'" + Filename + "'!AddBlankRows"
-    Application.Run "'" + Filename + "'!FormatCells"
+    Application.Run "'" + Filename + "'!StyleCells"
     Application.Run "'" + Filename + "'!AddBorders"
 End Sub
 
@@ -47,6 +47,9 @@ Sub SortRows()
     SF.Add Key:=Columns("C") _
         , SortOn:=xlSortOnValues, Order:=xlDescending, CustomOrder:= _
         "8:00am,9:00am,10:00am,11:00am,11:30am,12:00pm,1:00pm,1:30pm,2:00pm,3:00pm,4:00pm,4:30pm,5:00pm,6:00pm,7:00pm,8:00pm", DataOption:=xlSortNormal
+    ' The name column
+    SF.Add Key:=Columns("A") _
+        , SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:=xlSortNormal
     With Sheet1.Sort
         .SetRange Range("A1:E75")
         .Header = xlYes
@@ -92,9 +95,9 @@ Sub AddBlankRows()
     SpacedRowCount = Cells(Sheet.rows.Count, "A").End(xlUp).Row
 End Sub
 
-Sub FormatCells()
+Sub StyleCells()
 '
-' FormatCells Macro
+' StyleCells Macro
 ' Formats the cells to your liking
 '
     Columns("A").HorizontalAlignment = xlLeft
@@ -105,8 +108,8 @@ Sub FormatCells()
     Columns("D").NumberFormat = "[$-x-sysdate]dddd, mmmm dd, yyyy"
     ' Change font of regular text to desired
     With rows("2:" & SpacedRowCount).Font
-        .Name = "Baskerville Old Face"
-        .Size = 11
+        .Name = "Perpetua"
+        .Size = 13
     End With
     With rows("2:" & SpacedRowCount)
         .VerticalAlignment = xlCenter
