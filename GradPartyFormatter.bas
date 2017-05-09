@@ -1,4 +1,4 @@
-Attribute VB_Name = "GradPartyFormat"
+Attribute VB_Name = "GradPartyFormatter"
 Public WB As Workbook
 Public Sheet As Worksheet
 ' The number of rows when there are no blank rows between dates
