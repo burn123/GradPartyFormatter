@@ -18,8 +18,8 @@ Sub FormatGradParties()
 
     Application.Run "'" + Filename + "'!SortRows"
     Application.Run "'" + Filename + "'!DeleteBlankRows"
-    Application.Run "'" + Filename + "'!AddBlankRows"
     Application.Run "'" + Filename + "'!StyleCells"
+    Application.Run "'" + Filename + "'!AddBlankRows"
     Application.Run "'" + Filename + "'!AddBorders"
 End Sub
 
@@ -68,11 +68,11 @@ Sub DeleteBlankRows()
 '
   Dim r As Range, i As Long
   Set r = Sheet.Range("1:50")
-  For i = r.rows.Count To 1 Step (-1)
+  For i = r.Rows.Count To 1 Step (-1)
     ' Deletes the row if it is empty
-    If WorksheetFunction.CountA(r.rows(i)) = 0 Then r.rows(i).Delete
+    If WorksheetFunction.CountA(r.Rows(i)) = 0 Then r.Rows(i).Delete
   Next
-  RowCount = Cells(Sheet.rows.Count, "A").End(xlUp).Row
+  RowCount = Cells(Sheet.Rows.Count, "A").End(xlUp).row
 End Sub
 
 Sub AddBlankRows()
@@ -83,16 +83,16 @@ Sub AddBlankRows()
 '
     Dim i As Long
     
-    LastRow = Cells(rows.Count, "D").End(xlUp).Row
+    LastRow = Cells(Rows.Count, "D").End(xlUp).row
     ' Iterate backwards, so row numbers stay absolute
     For i = RowCount To 3 Step -1
         ' Checks if the date is equal between 2 columns
         If Cells(i, "D") <> Cells(i - 1, "D") Then
-            rows(i).Insert
+            Rows(i).Insert
         End If
     Next i
     ' Set how many rows there are
-    SpacedRowCount = Cells(Sheet.rows.Count, "A").End(xlUp).Row
+    SpacedRowCount = Cells(Sheet.Rows.Count, "A").End(xlUp).row
 End Sub
 
 Sub StyleCells()
@@ -103,15 +103,30 @@ Sub StyleCells()
     Columns("A").HorizontalAlignment = xlLeft
     Columns("B:D").HorizontalAlignment = xlCenter
     Columns("E").HorizontalAlignment = xlLeft
-    rows("1").HorizontalAlignment = xlCenter
+    Rows("1").HorizontalAlignment = xlCenter
     ' Change dates to correct date format
     Columns("D").NumberFormat = "[$-x-sysdate]dddd, mmmm dd, yyyy"
     ' Change font of regular text to desired
-    With rows("2:" & SpacedRowCount).Font
+    With Rows("2:" & RowCount).Font
         .Name = "Perpetua"
         .Size = 13
     End With
-    With rows("2:" & SpacedRowCount)
+    
+    ' Bolden the city name in location, if applicable
+    Dim commaPos As Integer, row As Integer
+    Dim cell As Range
+    
+    For row = 2 To RowCount
+        Set cell = Cells(row, "E")
+        commaPos = InStr(cell.Value, ",")
+        If commaPos <> 0 Then
+            cell.Characters(Start:=commaPos).Font.FontStyle = "Italic"
+        End If
+    
+    
+        Next row
+    
+    With Rows("2:" & RowCount)
         .VerticalAlignment = xlCenter
     End With
 End Sub
